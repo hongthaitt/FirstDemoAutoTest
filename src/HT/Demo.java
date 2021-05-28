@@ -5,33 +5,31 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 
-import org.junit.Assert;
 
 public class Demo {
     public static void main(String[] args) throws InterruptedException {
         String key = "TeSter";
-
         String baseUrl = "https://www.google.com.vn/";
         System.setProperty("webdriver.chrome.driver", "E:\\chromedriver.exe");
 
         WebDriver driver = new ChromeDriver();
         driver.get(baseUrl);
 
-        WebElement textField = driver.findElement(By.xpath("//input[@class='gLFyf gsfi']"));
+        WebElement textField = driver.findElement(By.xpath("//input[@type='text' and @name='q'] "));
         textField.sendKeys(key);
         textField.sendKeys(Keys.ENTER);
-        Thread.sleep(5000);
+        WebDriverWait wait = new WebDriverWait(driver, 120);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='result-stats']")));
 
-        ArrayList<WebElement> list = new ArrayList<>(driver.findElements(By.xpath("//div[@class='yuRUbf']/a/h3")));
-        for (int i = 1; i < list.size(); i++) {
-            String xpath = "//*[@id='rso']/div[" + i + "]/div/div/div[1]/a/h3";
-            String result = driver.findElement(By.xpath(xpath)).getText();
-            String key1 = key.toUpperCase();
-            String result2 = result.toUpperCase();
-            Assert.assertTrue(result2.contains(key1));
+        ArrayList<WebElement> listResult = new ArrayList<>(driver.findElements(By.xpath("//div[@class='yuRUbf']/a/h3")));
+        for (int i = 1; i < listResult.size(); i++) {
+            String result = listResult.get(i).getText();
+            result.toUpperCase().contains(key.toUpperCase());
         }
         driver.close();
 
