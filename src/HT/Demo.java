@@ -29,7 +29,6 @@ public class Demo {
         ArrayList<WebElement> listResult = new ArrayList<>(driver.findElements(By.xpath("//div[@class='yuRUbf']/a/h3")));
         for (WebElement element : listResult) {
             String result = element.getText();
-         result.toUpperCase().contains(key.toUpperCase());
             if (result.toUpperCase().contains(key.toUpperCase())) {
                 System.out.println("Verify pass  ");
             }
